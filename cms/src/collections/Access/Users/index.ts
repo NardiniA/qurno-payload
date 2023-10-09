@@ -19,14 +19,17 @@ const Users: CollectionConfig = {
   },
   fields: [
     {
-      name: "name",
-      label: "Name",
-      type: "text",
-      required: true,
-    },
-    {
       type: "row",
       fields: [
+        {
+          name: "name",
+          label: "Name",
+          type: "text",
+          admin: {
+            width: "30%",
+          },
+          required: true,
+        },
         {
           name: "roles",
           label: "Roles",
@@ -49,20 +52,19 @@ const Users: CollectionConfig = {
           },
           required: true,
         },
-        permissions({
-          overrides: {
-            admin: {
-              condition: (_, { roles }) => roles === "editor",
-            },
-            access: {
-              create: isAdminFieldLevel,
-              update: isAdminFieldLevel,
-            },
-            required: true,
-          },
-        }),
       ],
     },
+    permissions({
+      overrides: {
+        admin: {
+          condition: (_, { roles }) => roles === "editor",
+        },
+        access: {
+          create: isAdminFieldLevel,
+          update: isAdminFieldLevel,
+        },
+      },
+    }),
   ],
 }
 
