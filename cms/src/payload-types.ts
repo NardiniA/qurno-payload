@@ -8,13 +8,225 @@
 
 export interface Config {
   collections: {
-    media: Media;
     users: User;
     'api-access': ApiAccess;
+    alerts: Alert;
+    posts: Post;
+    tags: Tag;
+    authors: Author;
+    pages: Page;
+    media: Media;
+    redirects: Redirect;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   globals: {};
+}
+export interface User {
+  id: string;
+  name: string;
+  roles: 'editor' | 'admin';
+  permissions?: {
+    media?: {
+      read?: boolean;
+      create?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    };
+    posts?: {
+      read?: boolean;
+      create?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    };
+    tags?: {
+      read?: boolean;
+      create?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    };
+    authors?: {
+      read?: boolean;
+      create?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    };
+  };
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string;
+  resetPasswordExpiration?: string;
+  salt?: string;
+  hash?: string;
+  loginAttempts?: number;
+  lockUntil?: string;
+  password?: string;
+}
+export interface ApiAccess {
+  id: string;
+  name: string;
+  permissions?: {
+    media?: {
+      read?: boolean;
+      create?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    };
+    posts?: {
+      read?: boolean;
+      create?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    };
+    tags?: {
+      read?: boolean;
+      create?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    };
+    authors?: {
+      read?: boolean;
+      create?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    };
+  };
+  updatedAt: string;
+  createdAt: string;
+  enableAPIKey?: boolean;
+  apiKey?: string;
+  apiKeyIndex?: string;
+}
+export interface Alert {
+  id: string;
+  name: string;
+  theme: 'info' | 'success' | 'warning' | 'error';
+  placement: 'global' | 'individual';
+  documents:
+    | (
+        | {
+            relationTo: 'pages';
+            value: string;
+          }
+        | {
+            relationTo: 'posts';
+            value: string;
+          }
+      )[]
+    | (
+        | {
+            relationTo: 'pages';
+            value: Page;
+          }
+        | {
+            relationTo: 'posts';
+            value: Post;
+          }
+      )[];
+  content: {
+    [k: string]: unknown;
+  }[];
+  links?: {
+    link: {
+      appearance?: 'text' | 'primaryButton' | 'secondaryButton';
+      type?: 'reference' | 'custom';
+      label: string;
+      reference:
+        | {
+            relationTo: 'pages';
+            value: string | Page;
+          }
+        | {
+            relationTo: 'posts';
+            value: string | Post;
+          };
+      url: string;
+      newTab?: boolean;
+    };
+    id?: string;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+export interface Page {
+  id: string;
+  title: string;
+  slug?: string;
+  parent?: string | Page;
+  breadcrumbs?: {
+    doc?: string | Page;
+    url?: string;
+    label?: string;
+    id?: string;
+  }[];
+  layout: {
+    sections: (
+      | {
+          content: {
+            [k: string]: unknown;
+          }[];
+          id?: string;
+          blockName?: string;
+          blockType: 'about-block';
+        }
+      | {
+          title?: string;
+          type: 'auto' | 'custom';
+          limit: number;
+          custom: string[] | Post[];
+          id?: string;
+          blockName?: string;
+          blockType: 'post-block';
+        }
+      | {
+          title?: string;
+          type: 'auto' | 'custom';
+          limit: number;
+          custom: string[] | Tag[];
+          id?: string;
+          blockName?: string;
+          blockType: 'tags-block';
+        }
+      | {
+          title?: string;
+          type: 'auto' | 'custom';
+          limit: number;
+          custom: string[] | Author[];
+          id?: string;
+          blockName?: string;
+          blockType: 'authors-block';
+        }
+    )[];
+  };
+  seo: {
+    metaTitle: string;
+    metaDescription: string;
+    metaImage: string | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: 'draft' | 'published';
+}
+export interface Post {
+  id: string;
+  post: {
+    title: string;
+    description: string;
+    thumbnail: string | Media;
+  };
+  content: {
+    content: {
+      [k: string]: unknown;
+    }[];
+  };
+  slug?: string;
+  publishDate: string;
+  author: string | Author;
+  tags: string | Tag;
+  updatedAt: string;
+  createdAt: string;
+  _status?: 'draft' | 'published';
 }
 export interface Media {
   id: string;
@@ -40,31 +252,45 @@ export interface Media {
     };
   };
 }
-export interface User {
+export interface Author {
   id: string;
   name: string;
-  roles: 'editor' | 'admin';
-  permissions: ('pages' | 'blog' | 'settings' | 'forms')[];
+  bio: string;
+  profile: string | Media;
+  slug?: string;
+  social?: {
+    platform: string;
+    url: string;
+    id?: string;
+  }[];
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string;
-  resetPasswordExpiration?: string;
-  salt?: string;
-  hash?: string;
-  loginAttempts?: number;
-  lockUntil?: string;
-  password?: string;
 }
-export interface ApiAccess {
+export interface Tag {
   id: string;
   name: string;
-  permissions?: ('pages' | 'blog' | 'settings' | 'forms')[];
+  slug?: string;
   updatedAt: string;
   createdAt: string;
-  enableAPIKey?: boolean;
-  apiKey?: string;
-  apiKeyIndex?: string;
+}
+export interface Redirect {
+  id: string;
+  from: string;
+  to: {
+    type?: 'reference' | 'custom';
+    reference:
+      | {
+          relationTo: 'pages';
+          value: string | Page;
+        }
+      | {
+          relationTo: 'posts';
+          value: string | Post;
+        };
+    url: string;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 export interface PayloadPreference {
   id: string;
@@ -102,9 +328,15 @@ export interface PayloadMigration {
 declare module 'payload' {
   export interface GeneratedTypes {
     collections: {
-      'media': Media
       'users': User
       'api-access': ApiAccess
+      'alerts': Alert
+      'posts': Post
+      'tags': Tag
+      'authors': Author
+      'pages': Page
+      'media': Media
+      'redirects': Redirect
       'payload-preferences': PayloadPreference
       'payload-migrations': PayloadMigration
     }

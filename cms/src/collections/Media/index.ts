@@ -6,12 +6,13 @@ const Media: CollectionConfig = {
   admin: {
     useAsTitle: "filename",
     defaultColumns: ["filename"],
+    group: "Content",
   },
   access: {
-    read: hasPermissions("pages", "blog", "settings", "forms"),
-    create: hasPermissions("pages", "blog", "settings", "forms"),
-    update: hasPermissions("pages", "blog", "settings", "forms"),
-    delete: hasPermissions("pages", "blog", "settings", "forms"),
+    read: hasPermissions("media", "read"),
+    create: hasPermissions("media", "create"),
+    update: hasPermissions("media", "update"),
+    delete: hasPermissions("media", "delete"),
   },
   upload: {
     staticURL: process.env.PAYLOAD_PUBLIC_MEDIA_ENDPOINT,

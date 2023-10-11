@@ -22,12 +22,15 @@
     "@payloadcms/plugin-cloud-storage": "^1.0.19",
     "@payloadcms/plugin-form-builder": "^1.0.15",
     "@payloadcms/plugin-nested-docs": "^1.0.6",
+    "@payloadcms/plugin-redirects": "^1.0.0",
     "@payloadcms/richtext-lexical": "^0.1.1",
     "@payloadcms/richtext-slate": "latest",
     "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "payload": "latest"
+    "mongodb": "^6.1.0",
+    "payload": "^2.0.1",
+    "ts-essentials": "^9.4.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.9",

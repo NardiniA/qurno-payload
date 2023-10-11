@@ -1,6 +1,6 @@
 import type { CollectionConfig } from "payload/types";
 import { permissions } from "../fields/permissions";
-import { isAdmin } from "../../../access/isAdmin";
+import { isAdmin, isAdminView } from "../../../access/isAdmin";
 
 const API: CollectionConfig = {
   slug: "api-access",
@@ -17,6 +17,7 @@ const API: CollectionConfig = {
     create: isAdmin,
     update: isAdmin,
     delete: isAdmin,
+    admin: isAdminView,
   },
   admin: {
     useAsTitle: "name",

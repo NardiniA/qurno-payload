@@ -1,38 +1,30 @@
 import type { AccessArgs, AccessResult } from "payload/config";
 import type { FieldAccess } from "payload/types";
-import { ApiAccess, User } from "payload/generated-types";
+import type { ApiAccess, User } from "payload/generated-types";
 
 type HasPermissionsResult = AccessResult | boolean;
 type Permissions = User["permissions"] | ApiAccess["permissions"];
+type CollectionPermissions = {
+  [key: string]: boolean;
+}
 
-/**
- * simple access check
- * @param user
- * @param ...permissions
- * @returns {boolean | object}
- */
-const handleAccess = (user: User, ...permissions: Permissions): HasPermissionsResult => {
+const handleAccess = (user: User | ApiAccess, collection: string, action: string) => {
   if (user) {
+    // @ts-ignore
     if (user?.roles === "admin") return true;
 
-    return !!user?.permissions?.some((p) => permissions?.includes(p));
+    const userPermissions: CollectionPermissions = user?.permissions[collection];
+
+    if (userPermissions) {
+      return Boolean(userPermissions[action]);
+    }
   }
 
   return false;
 }
 
-export type HasPermissionsAccess = (...permissions: Permissions) => (args: AccessArgs<any, User>) => HasPermissionsResult;
-export type HasPermissionsFieldAccess = (...permissions: Permissions) => (args: FieldAccess<any, User>["arguments"]) => HasPermissionsResult;
+export type HasPermissionsAccess = (collection: string, action: string) => (args: AccessArgs<any, User | ApiAccess>) => HasPermissionsResult;
+export type HasPermissionsFieldAccess = (collection: string, action: string) => (args: FieldAccess<any, User | ApiAccess>["arguments"]) => HasPermissionsResult;
 
-/**
- * simple permission check
- * @param permissions
- * @returns {boolean | object}
- */
-export const hasPermissions: HasPermissionsAccess = (permissions) => ({ req: { user } }) => handleAccess(user, permissions);
-/**
- * simple permission check for fields
- * @param permissions
- * @returns {boolean | object}
- */
-export const hasPermissionsFieldLevel: HasPermissionsFieldAccess = (permissions) => ({ req: { user } }) => handleAccess(user, permissions);
+export const hasPermissions: HasPermissionsAccess = (collection, action) => ({ req: { user } }) => handleAccess(user, collection, action);
+export const hasPermissionsFieldLevel: HasPermissionsFieldAccess = (collection, action) => ({ req: { user } }) => handleAccess(user, collection, action);

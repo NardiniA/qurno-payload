@@ -1,14 +1,14 @@
 import type { CollectionConfig } from 'payload/types'
 import { permissions } from '../fields/permissions'
 import { isAdminOrSelf } from '../../../access/isAdminOrSelf'
-import { isAdmin, isAdminFieldLevel } from '../../../access/isAdmin'
+import { isAdmin, isAdminFieldLevel, isAdminView } from '../../../access/isAdmin'
 
 const Users: CollectionConfig = {
   slug: 'users',
   auth: true,
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ["name", "emails"],
+    defaultColumns: ["name", "email", "roles"],
     group: "Access",
   },
   access: {
@@ -16,6 +16,7 @@ const Users: CollectionConfig = {
     create: isAdmin,
     update: isAdminOrSelf,
     delete: isAdmin,
+    admin: isAdminView,
   },
   fields: [
     {

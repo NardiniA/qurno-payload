@@ -1,11 +1,11 @@
 import type { Field } from "payload/types";
-import { PermissionsItem } from ".";
+import { PermissionsItem, default_actions } from "../../config";
 import { capitalise } from "../../../../utilities/capitalise";
 
 type ActionsField = (args: PermissionsItem) => Field;
 
-export const actions: ActionsField = (args) => {
-  const options: Field[] = args?.availableActions?.map((action) => ({
+export const actions: ActionsField = ({ availableActions = default_actions, collection }) => {
+  const options: Field[] = availableActions?.map((action) => ({
     name: action?.value,
     label: action?.label,
     type: "checkbox",
@@ -14,11 +14,11 @@ export const actions: ActionsField = (args) => {
   }));
 
   return {
-    label: capitalise(args?.collection),
+    label: capitalise(collection),
     type: "collapsible",
     fields: [
       {
-        name: args?.collection,
+        name: collection,
         label: false,
         type: "group",
         admin: {
