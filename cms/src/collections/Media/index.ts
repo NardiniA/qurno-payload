@@ -1,5 +1,6 @@
 import type { CollectionConfig } from "payload/types";
 import { hasPermissions } from "../../access/hasPermissions";
+import { filterImages } from "../../utilities/filterImages";
 
 const Media: CollectionConfig = {
   slug: "media",
@@ -43,13 +44,7 @@ const Media: CollectionConfig = {
       admin: {
         condition: ({ mimeType }, _) => mimeType?.includes("video"),
       },
-      filterOptions: () => {
-        return {
-          mimeType: {
-            contains: "image",
-          },
-        }
-      },
+      filterOptions: filterImages,
       required: true,
     },
   ],

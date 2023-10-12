@@ -1,6 +1,7 @@
 import type { CollectionConfig } from "payload/types";
 import { hasPermissions } from "../../../access/hasPermissions";
 import slug from "../../../fields/slug";
+import { filterImages } from "../../../utilities/filterImages";
 
 const Posts: CollectionConfig = {
   slug: "posts",
@@ -47,13 +48,7 @@ const Posts: CollectionConfig = {
               label: "Thumbnail",
               type: "upload",
               relationTo: "media",
-              filterOptions: () => {
-                return {
-                  mimeType: {
-                    contains: "image",
-                  },
-                }
-              },
+              filterOptions: filterImages,
               required: true,
             },
           ],

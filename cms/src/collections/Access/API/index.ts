@@ -17,7 +17,6 @@ const API: CollectionConfig = {
     create: isAdmin,
     update: isAdmin,
     delete: isAdmin,
-    admin: isAdminView,
   },
   admin: {
     useAsTitle: "name",

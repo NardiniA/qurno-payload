@@ -10,13 +10,13 @@ const Users: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ["name", "email", "roles"],
     group: "Access",
+    hidden: ({ user }) => user?.roles !== "admin",
   },
   access: {
     read: isAdminOrSelf,
     create: isAdmin,
     update: isAdminOrSelf,
     delete: isAdmin,
-    admin: isAdminView,
   },
   fields: [
     {
@@ -58,7 +58,7 @@ const Users: CollectionConfig = {
     permissions({
       overrides: {
         admin: {
-          condition: (_, { roles }) => roles === "editor",
+          condition: (_, { roles }, { user }) => roles === "editor" && user?.roles === "admin",
         },
         access: {
           create: isAdminFieldLevel,

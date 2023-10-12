@@ -17,6 +17,8 @@ export interface Config {
     pages: Page;
     media: Media;
     redirects: Redirect;
+    forms: Form;
+    'form-submissions': FormSubmission;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -27,6 +29,12 @@ export interface User {
   name: string;
   roles: 'editor' | 'admin';
   permissions?: {
+    pages?: {
+      read?: boolean;
+      create?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    };
     media?: {
       read?: boolean;
       create?: boolean;
@@ -46,6 +54,18 @@ export interface User {
       delete?: boolean;
     };
     authors?: {
+      read?: boolean;
+      create?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    };
+    alerts?: {
+      read?: boolean;
+      create?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    };
+    redirects?: {
       read?: boolean;
       create?: boolean;
       update?: boolean;
@@ -67,6 +87,12 @@ export interface ApiAccess {
   id: string;
   name: string;
   permissions?: {
+    pages?: {
+      read?: boolean;
+      create?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    };
     media?: {
       read?: boolean;
       create?: boolean;
@@ -86,6 +112,18 @@ export interface ApiAccess {
       delete?: boolean;
     };
     authors?: {
+      read?: boolean;
+      create?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    };
+    alerts?: {
+      read?: boolean;
+      create?: boolean;
+      update?: boolean;
+      delete?: boolean;
+    };
+    redirects?: {
       read?: boolean;
       create?: boolean;
       update?: boolean;
@@ -160,6 +198,15 @@ export interface Page {
     label?: string;
     id?: string;
   }[];
+  hero: {
+    type: 'page_header' | 'banner';
+    page_header?: {
+      title: string;
+    };
+    banner?: {
+      title: string;
+    };
+  };
   layout: {
     sections: (
       | {
@@ -292,6 +339,223 @@ export interface Redirect {
   updatedAt: string;
   createdAt: string;
 }
+export interface Form {
+  id: string;
+  title: string;
+  fields?: (
+    | {
+        label: string;
+        placeholder: string;
+        name?: string;
+        defaultValue: string;
+        size: 'col-lg-12' | 'col-lg-6 col-md-12' | 'col-lg-4 col-md-6 col-12' | 'col-lg-3 col-md-6 col-12';
+        validation: {
+          required: {
+            value?: boolean;
+            message: string;
+          };
+          min: {
+            value?: number;
+            message: string;
+          };
+          max: {
+            value?: number;
+            message: string;
+          };
+          minLength: {
+            value?: number;
+            message: string;
+          };
+          maxLength: {
+            value?: number;
+            message: string;
+          };
+          pattern: {
+            value?: string;
+            message: string;
+          };
+        };
+        id?: string;
+        blockName?: string;
+        blockType: 'text';
+      }
+    | {
+        label: string;
+        placeholder: string;
+        name?: string;
+        defaultValue: string;
+        size: 'col-lg-12' | 'col-lg-6 col-md-12' | 'col-lg-4 col-md-6 col-12' | 'col-lg-3 col-md-6 col-12';
+        validation: {
+          required: {
+            value?: boolean;
+            message: string;
+          };
+          min: {
+            value?: number;
+            message: string;
+          };
+          max: {
+            value?: number;
+            message: string;
+          };
+          minLength: {
+            value?: number;
+            message: string;
+          };
+          maxLength: {
+            value?: number;
+            message: string;
+          };
+          pattern: {
+            value?: string;
+            message: string;
+          };
+        };
+        id?: string;
+        blockName?: string;
+        blockType: 'textarea';
+      }
+    | {
+        label: string;
+        placeholder: string;
+        name?: string;
+        size: 'col-lg-12' | 'col-lg-6 col-md-12' | 'col-lg-4 col-md-6 col-12' | 'col-lg-3 col-md-6 col-12';
+        options: {
+          label: string;
+          id?: string;
+        }[];
+        validation: {
+          required: {
+            value?: boolean;
+            message: string;
+          };
+          minLength: {
+            value?: number;
+            message: string;
+          };
+          maxLength: {
+            value?: number;
+            message: string;
+          };
+          pattern: {
+            value?: string;
+            message: string;
+          };
+        };
+        id?: string;
+        blockName?: string;
+        blockType: 'select';
+      }
+    | {
+        label: string;
+        placeholder: string;
+        name?: string;
+        defaultValue: string;
+        size: 'col-lg-12' | 'col-lg-6 col-md-12' | 'col-lg-4 col-md-6 col-12' | 'col-lg-3 col-md-6 col-12';
+        validation: {
+          required: {
+            value?: boolean;
+            message: string;
+          };
+          pattern: {
+            value?: string;
+            message: string;
+          };
+        };
+        id?: string;
+        blockName?: string;
+        blockType: 'email';
+      }
+    | {
+        label: string;
+        placeholder: string;
+        name?: string;
+        defaultValue: string;
+        size: 'col-lg-12' | 'col-lg-6 col-md-12' | 'col-lg-4 col-md-6 col-12' | 'col-lg-3 col-md-6 col-12';
+        validation: {
+          required: {
+            value?: boolean;
+            message: string;
+          };
+          min: {
+            value?: number;
+            message: string;
+          };
+          max: {
+            value?: number;
+            message: string;
+          };
+          pattern: {
+            value?: string;
+            message: string;
+          };
+        };
+        id?: string;
+        blockName?: string;
+        blockType: 'number';
+      }
+    | {
+        label: string;
+        defaultValue?: boolean;
+        validation: {
+          required: {
+            value?: boolean;
+            message: string;
+          };
+        };
+        id?: string;
+        blockName?: string;
+        blockType: 'checkbox';
+      }
+    | {
+        message?: {
+          [k: string]: unknown;
+        }[];
+        id?: string;
+        blockName?: string;
+        blockType: 'message';
+      }
+  )[];
+  submitButtonLabel?: string;
+  confirmationType?: 'message' | 'redirect';
+  confirmationMessage: {
+    [k: string]: unknown;
+  }[];
+  redirect?: {
+    type?: 'reference' | 'custom';
+    reference: {
+      relationTo: 'pages';
+      value: string | Page;
+    };
+    url: string;
+  };
+  emails?: {
+    emailTo?: string;
+    cc?: string;
+    bcc?: string;
+    replyTo?: string;
+    emailFrom?: string;
+    subject: string;
+    message?: {
+      [k: string]: unknown;
+    }[];
+    id?: string;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+  _status?: 'draft' | 'published';
+}
+export interface FormSubmission {
+  id: string;
+  form: string | Form;
+  submissionData?: {
+    field: string;
+    value: string;
+    id?: string;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
 export interface PayloadPreference {
   id: string;
   user:
@@ -337,6 +601,8 @@ declare module 'payload' {
       'pages': Page
       'media': Media
       'redirects': Redirect
+      'forms': Form
+      'form-submissions': FormSubmission
       'payload-preferences': PayloadPreference
       'payload-migrations': PayloadMigration
     }

@@ -3,31 +3,41 @@ import type { Config } from "payload/generated-types";
 export type CollectionOptions = keyof Config["collections"];
 
 export type PermissionsItem = {
-  collection: CollectionOptions;
-  availableActions?: {
-    label: string;
-    value: string;
-  }[];
+  collection: string;
+  availableActions?: string[];
 }
 
-export const default_actions: PermissionsItem["availableActions"] = [
-  {
-    label: "Read",
-    value: "read",
+export type DefaultApproved = {
+  [key: string]: {
+    [key: string]: boolean;
+  };
+}
+
+export const default_actions: PermissionsItem["availableActions"] = ["read", "create", "update", "delete"];
+
+export const default_approved_actions: DefaultApproved = {
+  media: {
+    read: true,
+    create: true,
+    update: true,
+    delete: true,
   },
-  {
-    label: "Create",
-    value: "create",
+  pages: {
+    read: true,
   },
-  {
-    label: "Update",
-    value: "update",
+  posts: {
+    read: true,
   },
-  {
-    label: "Delete",
-    value: "delete",
+  tags: {
+    read: true,
   },
-];
+  authors: {
+    read: true,
+  },
+  forms: {
+    read: true,
+  },
+}
 
 export const access_config: PermissionsItem[] = [
   { collection: "pages", },
@@ -37,4 +47,17 @@ export const access_config: PermissionsItem[] = [
   { collection: "authors", },
   { collection: "alerts", },
   { collection: "redirects", },
+  { collection: "forms", },
+  {
+    collection: "submissions",
+    availableActions: ["read", "create", "delete"],
+  },
+  {
+    collection: "settings",
+    availableActions: ["read", "update"],
+  },
+  {
+    collection: "navigation",
+    availableActions: ["read", "update"],
+  },
 ];

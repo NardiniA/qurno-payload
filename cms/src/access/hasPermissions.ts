@@ -3,7 +3,6 @@ import type { FieldAccess } from "payload/types";
 import type { ApiAccess, User } from "payload/generated-types";
 
 type HasPermissionsResult = AccessResult | boolean;
-type Permissions = User["permissions"] | ApiAccess["permissions"];
 type CollectionPermissions = {
   [key: string]: boolean;
 }

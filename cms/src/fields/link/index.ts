@@ -20,7 +20,7 @@ type LinkType = (
   options?: {
     appearances?: string[] | false;
     disableLabel?: boolean;
-    overrides?: Record<string, unknown>;
+    overrides?: Partial<Field>;
   }
 ) => Field;
 

@@ -4,22 +4,24 @@ import { link } from ".";
 
 type LinkGroupType = (options?: {
   overrides?: Partial<ArrayField>;
+  linkOverrides?: Partial<Field>;
   appearances?: string[] | false;
 }) => Field;
 
 export const linkGroup: LinkGroupType = ({
   overrides = {},
+  linkOverrides = {},
   appearances,
 } = {}) => {
   const generatedLinkGroup: Field = {
     name: "links",
     type: "array",
-    maxRows: 2,
     fields: [
       link({
         appearances,
         overrides: {
           label: false,
+          ...linkOverrides,
         },
       }),
     ],

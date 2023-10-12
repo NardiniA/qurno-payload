@@ -106,6 +106,7 @@ const Alerts: CollectionConfig = {
     },
     linkGroup({
       overrides: {
+        maxRows: 2,
         admin: {
           components: {
             RowLabel: RowLabel({
