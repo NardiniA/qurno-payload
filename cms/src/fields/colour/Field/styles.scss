@@ -1,0 +1,35 @@
+.colour-field {
+  &__colour {
+    height: 3.25rem;
+    width: 100%;
+    cursor: pointer;
+    box-shadow: none;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+  }
+
+  &__container {
+    position: relative;
+  }
+
+  &__popover {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+
+  &__cover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    width: 100%;
+  }
+}

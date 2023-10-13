@@ -2,6 +2,7 @@ import type { GlobalConfig } from "payload/types";
 import { hasPermissions } from "../../access/hasPermissions";
 import { filterImages } from "../../utilities/filterImages";
 import RowLabel from "../../components/RowLabel";
+import { colour } from "../../fields/colour";
 
 const Settings: GlobalConfig = {
   slug: "settings",
@@ -118,18 +119,48 @@ const Settings: GlobalConfig = {
           label: "Configuration",
           fields: [
             {
-              name: "pgn",
-              label: "Pagination Limit",
-              type: "number",
-              required: true,
+              type: "row",
+              fields: [
+                {
+                  name: "pgn",
+                  label: "Pagination Limit",
+                  type: "number",
+                  required: true,
+                },
+                {
+                  name: "deployHook",
+                  label: "Deployment Hook",
+                  type: "text",
+                  required: true,
+                },
+              ],
             },
             {
-              name: "deployHook",
-              label: "Deployment Hook",
-              type: "text",
-              required: true,
+              type: "row",
+              fields: [
+                colour({
+                  picker: "twitter",
+                  overrides: {
+                    name: "primaryColour",
+                    label: "Primary Colour",
+                  },
+                }),
+                colour({
+                  picker: "twitter",
+                  overrides: {
+                    name: "backgroundColour",
+                    label: "Background Colour",
+                  },
+                }),
+                colour({
+                  picker: "twitter",
+                  overrides: {
+                    name: "darkBackgroundColour",
+                    label: "Dark Mode - Background Colour",
+                  },
+                }),
+              ],
             },
-            // Colours
           ],
         },
       ],
